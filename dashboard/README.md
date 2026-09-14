@@ -1,6 +1,6 @@
 # Sistema de Análise de Aterrissagem — Dashboard
 
-Essa é a interface web do nosso TCC (React + Vite). Ela mostra em tempo real os dados que o equipamento envia durante os saltos, que ficam salvos no Firebase Realtime Database.
+Essa é a interface web do nosso TCC. Ela mostra em tempo real os dados que o equipamento envia durante os saltos, que ficam salvos no Firebase Realtime Database.
 
 ## 1. Criando o projeto no Firebase
 

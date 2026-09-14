@@ -1,40 +1,33 @@
 # Sistema de Análise de Aterrissagem — Dashboard
 
-Interface web (React + Vite) que exibe em tempo real os dados enviados pelo
-equipamento de análise de aterrissagem, armazenados no Firebase Realtime
-Database.
+Essa é a interface web do nosso TCC (React + Vite). Ela mostra em tempo real os dados que o equipamento envia durante os saltos, que ficam salvos no Firebase Realtime Database.
 
-## 1. Criar o projeto no Firebase
+## 1. Criando o projeto no Firebase
 
-1. Acesse https://console.firebase.google.com e crie um novo projeto.
-2. No menu lateral, vá em **Build > Realtime Database** e clique em
-   "Criar banco de dados". Comece em **modo de teste** (você ajusta as
-   regras de segurança depois, antes de apresentar o TCC).
-3. Em **Configurações do projeto > Geral**, role até "Seus apps" e crie um
-   app da Web (ícone `</>`). Copie o objeto `firebaseConfig` que aparece.
+1. Entra em https://console.firebase.google.com e cria um projeto novo.
+2. No menu lateral, vai em **Build > Realtime Database** e clica em "Criar banco de dados". A gente começou em **modo de teste** mesmo, pra não travar o desenvolvimento — dá pra ajustar as regras de segurança depois, antes da apresentação.
+3. Em **Configurações do projeto > Geral**, desce até "Seus apps" e cria um app Web (ícone `</>`). Copia o objeto `firebaseConfig` que aparece, vai precisar dele no próximo passo.
 
-## 2. Configurar as variáveis de ambiente
+## 2. Variáveis de ambiente
 
-Copie `.env.example` para `.env` e preencha com os valores do
-`firebaseConfig` do passo anterior:
+Copia o `.env.example` pra `.env` e preenche com os valores do `firebaseConfig`:
 
 ```bash
 cp .env.example .env
 ```
 
-## 3. Instalar e rodar
+## 3. Instalando e rodando
 
 ```bash
 npm install
 npm run dev
 ```
 
-O terminal vai mostrar um endereço tipo `http://localhost:5173` — abra no
-navegador.
+Vai abrir um endereço tipo `http://localhost:5173` no terminal — só abrir no navegador.
 
-## 4. Estrutura de dados esperada no Realtime Database
+## 4. Como os dados ficam organizados no banco
 
-O dashboard escuta o nó `saltos`, organizado assim:
+O dashboard escuta o nó `saltos`, que fica assim:
 
 ```
 saltos/
@@ -50,28 +43,14 @@ saltos/
     ...
 ```
 
-Cada salto é um novo registro (chave gerada automaticamente, tipo
-`push()` do Firebase) dentro do nó do jogador. O campo `timestamp` deve
-ser em milissegundos (`Date.now()` no JS, ou `millis()` equivalente no
-ESP32/NTP).
+Cada salto vira um registro novo (chave gerada automaticamente, o `push()` do Firebase) dentro do nó do jogador. O `timestamp` tem que estar em milissegundos (`Date.now()` no JS ou o equivalente com `millis()`/NTP no ESP32).
 
-Você pode criar esse formato manualmente no console do Firebase pra
-testar a interface antes mesmo de o ESP32 estar pronto — é só adicionar
-alguns registros de exemplo em `saltos/jogador1/`.
+Dá pra criar esses dados manualmente no console do Firebase só pra testar a interface, mesmo antes do ESP32 estar pronto — é só colocar alguns registros de exemplo dentro de `saltos/jogador1/`.
 
-## 5. Regras de segurança (antes de apresentar o TCC)
+## 5. Regras de segurança (não esquecer antes de apresentar)
 
-O modo de teste deixa o banco aberto para qualquer leitura/escrita por
-30 dias. Antes da apresentação, troque as regras (aba **Regras** do
-Realtime Database) por algo mais restrito — por exemplo, liberando
-apenas leitura pública e escrita autenticada, ou restringindo por uma
-chave secreta que só o ESP32 conhece.
+O modo de teste deixa o banco aberto pra qualquer leitura/escrita por 30 dias, então isso não pode ficar assim na apresentação. Antes da banca, trocar as regras (aba **Regras** do Realtime Database) por algo mais restrito — por exemplo, leitura pública liberada mas escrita só autenticada, ou então travando por uma chave secreta que só o ESP32 conhece.
 
 ## Próximos passos
 
-- Integrar o ESP32 (envio dos dados via Wi-Fi/HTTP para o Realtime
-  Database).
-- Ajustar os nomes dos campos acima caso seu equipamento meça outras
-  variáveis.
-- Definir os IDs dos jogadores (hoje o app lê qualquer chave dentro de
-  `saltos/` automaticamente).
+- Integrar o ESP32 (mandar os dados via Wi-Fi/HTTP pro Realtime Database).
